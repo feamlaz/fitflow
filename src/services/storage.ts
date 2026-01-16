@@ -93,6 +93,12 @@ class StorageService {
     });
   }
 
+  async saveWorkoutSessions(sessions: WorkoutSession[]): Promise<void> {
+    for (const session of sessions) {
+      await this.saveWorkoutSession(session);
+    }
+  }
+
   async getWorkoutSessions(): Promise<WorkoutSession[]> {
     const store = await this.getStore('workoutSessions');
     return new Promise((resolve, reject) => {
@@ -251,7 +257,6 @@ class StorageService {
       await this.saveUserProfile(data.userProfile);
     }
     if (data.workoutSessions) {
-      const store = await this.getStore('workoutSessions', 'readwrite');
       for (const session of data.workoutSessions) {
         await this.saveWorkoutSession(session);
       }

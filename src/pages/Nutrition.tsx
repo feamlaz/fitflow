@@ -1,5 +1,5 @@
 import React from 'react';
-import { Apple, Plus, Search } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 export const Nutrition: React.FC = () => {
   return (

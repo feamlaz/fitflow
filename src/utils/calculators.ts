@@ -51,8 +51,7 @@ export const adjustCaloriesForGoal = (
  */
 export const calculateMacros = (
   calories: number,
-  goal: UserProfile['goal'],
-  weight: number
+  goal: UserProfile['goal']
 ): MacroTargets => {
   let proteinRatio = 0.3;
   let carbsRatio = 0.4;
@@ -88,7 +87,7 @@ export const calculateBMRComplete = (profile: UserProfile): BMRResult => {
   const bmr = calculateBMR(profile);
   const tdee = calculateTDEE(bmr, profile.activityLevel);
   const goalCalories = adjustCaloriesForGoal(tdee, profile.goal);
-  const macros = calculateMacros(goalCalories, profile.goal, profile.weight);
+  const macros = calculateMacros(goalCalories, profile.goal);
 
   return {
     bmr: Math.round(bmr),
