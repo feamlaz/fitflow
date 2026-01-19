@@ -1,13 +1,13 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Calculator, Dumbbell, Apple, TrendingUp } from 'lucide-react';
+import { Home, Calculator, Dumbbell, Apple, BarChart3 } from 'lucide-react';
 
 const tabs = [
   { id: 'home', label: 'Главная', icon: Home, path: '/' },
   { id: 'calculator', label: 'Калькулятор', icon: Calculator, path: '/calculator' },
   { id: 'workouts', label: 'Тренировки', icon: Dumbbell, path: '/workouts' },
   { id: 'nutrition', label: 'Питание', icon: Apple, path: '/nutrition' },
-  { id: 'progress', label: 'Прогресс', icon: TrendingUp, path: '/progress' },
+  { id: 'analytics', label: 'Аналитика', icon: BarChart3, path: '/analytics' },
 ];
 
 export const BottomNav: React.FC = () => {

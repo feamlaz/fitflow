@@ -136,6 +136,12 @@ export interface NutritionDay {
   totalCarbs: number;
   totalFat: number;
   waterIntake: number; // ml
+  macros: {
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+  water: number; // ml alias for waterIntake
 }
 
 // Progress tracking types

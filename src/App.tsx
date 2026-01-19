@@ -5,6 +5,7 @@ import { Calculator } from './pages/Calculator'
 import { Workouts } from './pages/Workouts'
 import { Nutrition } from './pages/Nutrition'
 import { Progress } from './pages/Progress'
+import { Analytics } from './pages/Analytics'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/workouts" element={<Workouts />} />
         <Route path="/nutrition" element={<Nutrition />} />
         <Route path="/progress" element={<Progress />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Routes>
     </Layout>
   )
