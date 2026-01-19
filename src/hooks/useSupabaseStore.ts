@@ -30,6 +30,15 @@ const adaptNutritionDayToLocal = (supabaseDay: any) => {
     carbs: supabaseDay.carbs,
     fat: supabaseDay.fat,
     water: supabaseDay.water,
+    waterIntake: supabaseDay.water,
+    totalProtein: supabaseDay.protein,
+    totalCarbs: supabaseDay.carbs,
+    totalFat: supabaseDay.fat,
+    macros: {
+      protein: supabaseDay.protein,
+      carbs: supabaseDay.carbs,
+      fat: supabaseDay.fat
+    },
     meals: supabaseDay.meals,
     createdAt: new Date(supabaseDay.created_at),
     updatedAt: new Date(supabaseDay.updated_at)
@@ -41,6 +50,16 @@ const adaptWorkoutSessionToLocal = (supabaseSession: any) => {
     id: supabaseSession.id,
     userId: supabaseSession.user_id,
     workoutId: supabaseSession.workout_id,
+    workout: {
+      id: supabaseSession.workout_id,
+      name: 'Workout',
+      description: 'Workout description',
+      exercises: supabaseSession.exercises,
+      duration: supabaseSession.duration,
+      difficulty: 'medium' as const,
+      category: 'strength' as const,
+      createdAt: new Date(supabaseSession.start_time)
+    },
     startTime: new Date(supabaseSession.start_time),
     endTime: supabaseSession.end_time ? new Date(supabaseSession.end_time) : null,
     duration: supabaseSession.duration,

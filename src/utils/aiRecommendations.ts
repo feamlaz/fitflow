@@ -33,7 +33,7 @@ export const generateAIRecommendation = (
   _recentWorkouts: WorkoutSession[],
   _nutritionDays: NutritionDay[]
 ) => {
-  if (!_userProfile) {
+  if (!userProfile) {
     return {
       type: 'general',
       icon: '💡',
@@ -43,7 +43,7 @@ export const generateAIRecommendation = (
     };
   }
 
-  const dailyCalories = calculateDailyCalories(_userProfile);
+  const dailyCalories = calculateDailyCalories(userProfile);
   const recommendations = [];
 
   // Анализ калорий
@@ -96,7 +96,7 @@ export const generateAIRecommendation = (
   }
 
   // Анализ цели
-  if (_userProfile.goal === 'lose_weight' && todayStats.goalProgress > 80) {
+  if (userProfile.goal === 'lose_weight' && todayStats.goalProgress > 80) {
     recommendations.push({
       type: 'goal',
       icon: '🎯',
@@ -129,7 +129,7 @@ export const generateTomorrowPrediction = (
   recentWorkouts: WorkoutSession[],
   nutritionDays: NutritionDay[]
 ) => {
-  if (!_userProfile) {
+  if (!userProfile) {
     return {
       prediction: 'Заполните профиль для получения предсказаний',
       confidence: 0,
@@ -143,19 +143,28 @@ export const generateTomorrowPrediction = (
   // Анализ последних тренировок
   if (recentWorkouts.length > 0) {
     const lastWorkout = recentWorkouts[0];
-    // ... остальной код
+    if (lastWorkout.completed) {
+      predictions.push('завтра будет хорошая тренировка');
+      tips.push('Отдохните и подготовьтесь к новому достижению');
+    } else {
+      predictions.push('завтра нужно завершить начатую тренировку');
+      tips.push('Продолжите с того места, где остановились');
+    }
   }
   
   // Анализ питания
-  if (_nutritionDays.length > 0) {
-    const lastNutrition = _nutritionDays[0];
-    // ... остальной код
+  if (nutritionDays.length > 0) {
+    const lastNutrition = nutritionDays[0];
+    if (lastNutrition.totalCalories > calculateDailyCalories(userProfile) * 1.2) {
+      predictions.push('завтра нужно следить за калориями');
+      tips.push('Планируйте меню заранее');
+    }
   }
 
-  const avgCalories = _nutritionDays.length > 0 
-    ? _nutritionDays.reduce((sum: number, day: NutritionDay) => sum + day.totalCalories, 0) / _nutritionDays.length
+  const avgCalories = nutritionDays.length > 0 
+    ? nutritionDays.reduce((sum: number, day: NutritionDay) => sum + day.totalCalories, 0) / nutritionDays.length
     : 2000;
-  const dailyCalories = calculateDailyCalories(_userProfile);
+  const dailyCalories = calculateDailyCalories(userProfile);
 
   if (avgCalories < dailyCalories * 0.9) {
     predictions.push('завтра будет легче придерживаться калорийной нормы');
@@ -261,7 +270,7 @@ export const generateNutritionTips = (
 ) => {
   const tips = [];
 
-  if (!_userProfile) {
+  if (!userProfile) {
     tips.push({
       category: 'general',
       tip: 'Сбалансируйте питание: белки, жиры и углеводы в правильных пропорциях',
@@ -270,10 +279,10 @@ export const generateNutritionTips = (
     return tips;
   }
 
-  const dailyCalories = calculateDailyCalories(_userProfile);
+  const dailyCalories = calculateDailyCalories(userProfile);
 
   // Советы на основе цели
-  if (_userProfile.goal === 'lose_weight') {
+  if (userProfile.goal === 'lose_weight') {
     tips.push({
       category: 'calories',
       tip: 'Создайте дефицит 300-500 ккалорий для безопасного похудения',
@@ -284,7 +293,7 @@ export const generateNutritionTips = (
       tip: 'Увеличьте потребление белка до 1.6-2г на кг веса',
       priority: 'high' as const
     });
-  } else if (_userProfile.goal === 'gain_muscle') {
+  } else if (userProfile.goal === 'gain_muscle') {
     tips.push({
       category: 'calories',
       tip: 'Создайте профицит 300-500 ккалорий для набора массы',
@@ -298,7 +307,7 @@ export const generateNutritionTips = (
   }
 
   // Советы на основе активности
-  if (_userProfile.activityLevel === 'very_active') {
+  if (userProfile.activityLevel === 'very_active') {
     tips.push({
       category: 'hydration',
       tip: 'Пейте 2.5-3 литра воды в день при высокой активности',
