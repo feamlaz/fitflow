@@ -24,7 +24,7 @@ const adaptNutritionDayToLocal = (supabaseDay: any) => {
   return {
     id: supabaseDay.id,
     userId: supabaseDay.user_id,
-    date: supabaseDay.date,
+    date: new Date(supabaseDay.date), // Преобразуем в Date
     totalCalories: supabaseDay.total_calories,
     protein: supabaseDay.protein,
     carbs: supabaseDay.carbs,
@@ -76,7 +76,7 @@ const adaptWeightEntryToLocal = (supabaseEntry: any) => {
     id: supabaseEntry.id,
     userId: supabaseEntry.user_id,
     weight: supabaseEntry.weight,
-    date: supabaseEntry.date,
+    date: new Date(supabaseEntry.date), // Преобразуем в Date
     notes: supabaseEntry.notes,
     createdAt: new Date(supabaseEntry.created_at),
     updatedAt: new Date(supabaseEntry.updated_at)

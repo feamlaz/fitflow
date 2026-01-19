@@ -245,10 +245,13 @@ export class SupabaseService {
       .from('user_goals')
       .select('*')
       .eq('user_id', _userId)
-      .single();
+      .maybeSingle(); // Используем maybeSingle вместо single
     
-    if (error) throw error;
-    return data;
+    if (error && error.code !== 'PGRST116') {
+      throw error;
+    }
+    
+    return data; // Вернет null если целей нет
   }
 
   static async saveUserGoals(_userId: string, goals: Database['public']['Tables']['user_goals']['Insert']) {

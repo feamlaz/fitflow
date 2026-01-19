@@ -138,8 +138,8 @@ export class AuthService {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('email')
-        .eq('email', email)
+        .select('id')
+        .eq('id', email) // В Supabase id пользователя это его email
         .single()
 
       if (error && error.code !== 'PGRST116') {
