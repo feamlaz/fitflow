@@ -56,8 +56,8 @@ const adaptWorkoutSessionToLocal = (supabaseSession: any) => {
       description: 'Workout description',
       exercises: supabaseSession.exercises,
       duration: supabaseSession.duration,
-      difficulty: 'medium' as const,
-      category: 'strength' as const,
+      difficulty: 'intermediate' as const,
+      category: 'home' as const,
       createdAt: new Date(supabaseSession.start_time)
     },
     startTime: new Date(supabaseSession.start_time),
@@ -137,18 +137,16 @@ export const useSupabaseStore = () => {
 
   const saveNutritionDay = async (day: any) => {
     try {
-      const supabaseDay = {
-        user_id: supabaseData.user?.id,
+      await supabaseData.saveNutritionDay({
+        userId: supabaseData.user?.id || '',
         date: day.date,
-        total_calories: day.totalCalories,
+        totalCalories: day.totalCalories,
         protein: day.protein,
         carbs: day.carbs,
         fat: day.fat,
         water: day.water,
         meals: day.meals
-      };
-
-      await supabaseData.saveNutritionDay(supabaseDay);
+      });
       // Данные автоматически синхронизируются через useEffect
     } catch (error) {
       console.error('Error saving nutrition day:', error);
@@ -158,28 +156,16 @@ export const useSupabaseStore = () => {
 
   const saveWorkoutSession = async (session: any) => {
     try {
-      const supabaseSession = {
-        user_id: supabaseData.user?.id,
-        workout_id: session.workoutId,
-        start_time: session.startTime.toISOString(),
-        end_time: session.endTime?.toISOString() || null,
+      await supabaseData.saveWorkoutSession({
+        userId: supabaseData.user?.id || '',
+        workoutId: session.workoutId,
+        startTime: session.startTime,
+        endTime: session.endTime,
         duration: session.duration,
         completed: session.completed,
         exercises: session.exercises,
-        notes: session.notes,
-        workout: {
-          id: session.workoutId,
-          name: 'Workout',
-          description: 'Workout description',
-          exercises: session.exercises,
-          duration: session.duration,
-          difficulty: 'medium' as const,
-          category: 'strength' as const,
-          createdAt: session.startTime
-        }
-      };
-
-      await supabaseData.saveWorkoutSession(supabaseSession);
+        notes: session.notes
+      });
       // Данные автоматически синхронизируются через useEffect
     } catch (error) {
       console.error('Error saving workout session:', error);
@@ -189,14 +175,12 @@ export const useSupabaseStore = () => {
 
   const saveWeightEntry = async (entry: any) => {
     try {
-      const supabaseEntry = {
-        user_id: supabaseData.user?.id,
+      await supabaseData.saveWeightEntry({
+        userId: supabaseData.user?.id || '',
         weight: entry.weight,
         date: entry.date,
         notes: entry.notes
-      };
-
-      await supabaseData.saveWeightEntry(supabaseEntry);
+      });
       // Данные автоматически синхронизируются через useEffect
     } catch (error) {
       console.error('Error saving weight entry:', error);

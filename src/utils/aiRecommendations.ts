@@ -203,7 +203,7 @@ export const generateTomorrowPrediction = (
 
 // Мотивационные бейджи
 export const generateMotivationBadges = (
-  userProfile: UserProfile | null,
+  _userProfile: UserProfile | null,
   todayStats: any,
   streakDays: number
 ) => {
@@ -266,7 +266,7 @@ export const generateMotivationBadges = (
 export const generateNutritionTips = (
   userProfile: UserProfile | null,
   todayStats: any,
-  nutritionDays: NutritionDay[]
+  _nutritionDays: NutritionDay[]
 ) => {
   const tips = [];
 

@@ -251,7 +251,7 @@ export class SupabaseService {
     return data;
   }
 
-  static async saveUserGoals(userId: string, goals: Database['public']['Tables']['user_goals']['Insert']) {
+  static async saveUserGoals(_userId: string, goals: Database['public']['Tables']['user_goals']['Insert']) {
     const { data, error } = await supabase
       .from('user_goals')
       .upsert(goals, {
