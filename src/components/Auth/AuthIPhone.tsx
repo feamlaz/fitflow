@@ -26,7 +26,6 @@ export const AuthIPhone = ({ onAuthChange }: AuthProps) => {
   useEffect(() => {
     const detectDevice = () => {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-      const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS/.test(navigator.userAgent)
       setIsIPhone(isIOS)
       
       // Load saved credentials

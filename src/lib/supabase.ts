@@ -1,7 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+interface ImportMetaEnv {
+  VITE_SUPABASE_URL: string;
+  VITE_SUPABASE_ANON_KEY: string;
+}
+
+declare global {
+  interface ImportMeta {
+    env: ImportMetaEnv;
+  }
+}
+
+const supabaseUrl = import.meta.env?.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env?.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -118,11 +129,11 @@ export class SupabaseService {
   }
 
   // Nutrition
-  static async getNutritionDays(userId: string, startDate?: string, endDate?: string) {
+  static async getNutritionDays(_userId: string, startDate?: string, endDate?: string) {
     let query = supabase
       .from('nutrition_days')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', _userId)
       .order('date', { ascending: false });
     
     if (startDate) {
@@ -137,10 +148,10 @@ export class SupabaseService {
     return data;
   }
 
-  static async saveNutritionDay(userId: string, nutritionDay: Database['public']['Tables']['nutrition_days']['Insert']) {
+  static async saveNutritionDay(_userId: string, nutritionDay: Database['public']['Tables']['nutrition_days']['Insert']) {
     const { data, error } = await supabase
       .from('nutrition_days')
-      .upsert(nutritionDay, {
+      .upsert({ ...nutritionDay, user_id: _userId }, {
         onConflict: 'user_id,date'
       })
       .select()
@@ -151,11 +162,11 @@ export class SupabaseService {
   }
 
   // Workouts
-  static async getWorkoutSessions(userId: string, startDate?: string, endDate?: string) {
+  static async getWorkoutSessions(_userId: string, startDate?: string, endDate?: string) {
     let query = supabase
       .from('workout_sessions')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', _userId)
       .order('start_time', { ascending: false });
     
     if (startDate) {
@@ -170,10 +181,12 @@ export class SupabaseService {
     return data;
   }
 
-  static async saveWorkoutSession(userId: string, session: Database['public']['Tables']['workout_sessions']['Insert']) {
+  static async saveWorkoutSession(_userId: string, session: Database['public']['Tables']['workout_sessions']['Insert']) {
     const { data, error } = await supabase
       .from('workout_sessions')
-      .insert(session)
+      .upsert({ ...session, user_id: _userId }, {
+        onConflict: 'user_id,workout_id'
+      })
       .select()
       .single();
     
@@ -194,11 +207,11 @@ export class SupabaseService {
   }
 
   // Weight
-  static async getWeightEntries(userId: string, startDate?: string, endDate?: string) {
+  static async getWeightEntries(_userId: string, startDate?: string, endDate?: string) {
     let query = supabase
       .from('weight_entries')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', _userId)
       .order('date', { ascending: false });
     
     if (startDate) {
@@ -213,10 +226,10 @@ export class SupabaseService {
     return data;
   }
 
-  static async saveWeightEntry(userId: string, entry: Database['public']['Tables']['weight_entries']['Insert']) {
+  static async saveWeightEntry(_userId: string, entry: Database['public']['Tables']['weight_entries']['Insert']) {
     const { data, error } = await supabase
       .from('weight_entries')
-      .upsert(entry, {
+      .upsert({ ...entry, user_id: _userId }, {
         onConflict: 'user_id,date'
       })
       .select()
@@ -227,11 +240,11 @@ export class SupabaseService {
   }
 
   // Goals
-  static async getUserGoals(userId: string) {
+  static async getUserGoals(_userId: string) {
     const { data, error } = await supabase
       .from('user_goals')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', _userId)
       .single();
     
     if (error) throw error;

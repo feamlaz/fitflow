@@ -30,10 +30,10 @@ const calculateDailyCalories = (userProfile: UserProfile): number => {
 export const generateAIRecommendation = (
   userProfile: UserProfile | null,
   todayStats: any,
-  recentWorkouts: WorkoutSession[],
-  nutritionDays: NutritionDay[]
+  _recentWorkouts: WorkoutSession[],
+  _nutritionDays: NutritionDay[]
 ) => {
-  if (!userProfile) {
+  if (!_userProfile) {
     return {
       type: 'general',
       icon: '💡',
@@ -43,7 +43,7 @@ export const generateAIRecommendation = (
     };
   }
 
-  const dailyCalories = calculateDailyCalories(userProfile);
+  const dailyCalories = calculateDailyCalories(_userProfile);
   const recommendations = [];
 
   // Анализ калорий
@@ -96,7 +96,7 @@ export const generateAIRecommendation = (
   }
 
   // Анализ цели
-  if (userProfile.goal === 'lose_weight' && todayStats.goalProgress > 80) {
+  if (_userProfile.goal === 'lose_weight' && todayStats.goalProgress > 80) {
     recommendations.push({
       type: 'goal',
       icon: '🎯',
@@ -129,7 +129,7 @@ export const generateTomorrowPrediction = (
   recentWorkouts: WorkoutSession[],
   nutritionDays: NutritionDay[]
 ) => {
-  if (!userProfile) {
+  if (!_userProfile) {
     return {
       prediction: 'Заполните профиль для получения предсказаний',
       confidence: 0,
@@ -140,11 +140,22 @@ export const generateTomorrowPrediction = (
   const predictions = [];
   const tips = [];
 
-  // Предсказание калорий
-  const avgCalories = nutritionDays.length > 0 
-    ? nutritionDays.reduce((sum: number, day: NutritionDay) => sum + day.totalCalories, 0) / nutritionDays.length
+  // Анализ последних тренировок
+  if (recentWorkouts.length > 0) {
+    const lastWorkout = recentWorkouts[0];
+    // ... остальной код
+  }
+  
+  // Анализ питания
+  if (_nutritionDays.length > 0) {
+    const lastNutrition = _nutritionDays[0];
+    // ... остальной код
+  }
+
+  const avgCalories = _nutritionDays.length > 0 
+    ? _nutritionDays.reduce((sum: number, day: NutritionDay) => sum + day.totalCalories, 0) / _nutritionDays.length
     : 2000;
-  const dailyCalories = calculateDailyCalories(userProfile);
+  const dailyCalories = calculateDailyCalories(_userProfile);
 
   if (avgCalories < dailyCalories * 0.9) {
     predictions.push('завтра будет легче придерживаться калорийной нормы');
@@ -250,7 +261,7 @@ export const generateNutritionTips = (
 ) => {
   const tips = [];
 
-  if (!userProfile) {
+  if (!_userProfile) {
     tips.push({
       category: 'general',
       tip: 'Сбалансируйте питание: белки, жиры и углеводы в правильных пропорциях',
@@ -259,10 +270,10 @@ export const generateNutritionTips = (
     return tips;
   }
 
-  const dailyCalories = calculateDailyCalories(userProfile);
+  const dailyCalories = calculateDailyCalories(_userProfile);
 
   // Советы на основе цели
-  if (userProfile.goal === 'lose_weight') {
+  if (_userProfile.goal === 'lose_weight') {
     tips.push({
       category: 'calories',
       tip: 'Создайте дефицит 300-500 ккалорий для безопасного похудения',
@@ -273,7 +284,7 @@ export const generateNutritionTips = (
       tip: 'Увеличьте потребление белка до 1.6-2г на кг веса',
       priority: 'high' as const
     });
-  } else if (userProfile.goal === 'gain_muscle') {
+  } else if (_userProfile.goal === 'gain_muscle') {
     tips.push({
       category: 'calories',
       tip: 'Создайте профицит 300-500 ккалорий для набора массы',
@@ -287,7 +298,7 @@ export const generateNutritionTips = (
   }
 
   // Советы на основе активности
-  if (userProfile.activityLevel === 'very_active') {
+  if (_userProfile.activityLevel === 'very_active') {
     tips.push({
       category: 'hydration',
       tip: 'Пейте 2.5-3 литра воды в день при высокой активности',

@@ -147,7 +147,17 @@ export const useSupabaseStore = () => {
         duration: session.duration,
         completed: session.completed,
         exercises: session.exercises,
-        notes: session.notes
+        notes: session.notes,
+        workout: {
+          id: session.workoutId,
+          name: 'Workout',
+          description: 'Workout description',
+          exercises: session.exercises,
+          duration: session.duration,
+          difficulty: 'medium' as const,
+          category: 'strength' as const,
+          createdAt: session.startTime
+        }
       };
 
       await supabaseData.saveWorkoutSession(supabaseSession);
