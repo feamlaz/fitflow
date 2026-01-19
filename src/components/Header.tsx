@@ -1,15 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { User } from '@supabase/supabase-js';
 
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
   onBack?: () => void;
+  user?: User;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
   title = 'FitFlow', 
   showBack = false, 
-  onBack 
+  onBack,
+  user
 }) => {
   return (
     <header className="header">
@@ -25,7 +29,16 @@ export const Header: React.FC<HeaderProps> = ({
         )}
         <h1 className="header-title">{title}</h1>
         <div className="header-actions">
-          {/* Место для дополнительных кнопок */}
+          {user && (
+            <Link 
+              to="/profile" 
+              className="profile-button text-2xl hover:opacity-80 transition-opacity"
+              style={{ color: 'var(--accent-primary)' }}
+              aria-label="Профиль"
+            >
+              👤
+            </Link>
+          )}
         </div>
       </div>
     </header>
