@@ -67,6 +67,5 @@ jobs:
         urls: |
           https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         configPath: './lighthouserc.json'
-        uploadArtifacts: true
+        uploadArtifacts: false
         temporaryPublicStorage: true
-        artifactName: 'lighthouse-report'
