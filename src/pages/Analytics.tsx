@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Award, Target, Calendar, Filter, Flame } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React, { useState } from 'react';
+import { TrendingDown, Award, Target, Calendar, Filter, Flame } from 'lucide-react';
+import { AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAppStore } from '../hooks/useAppStore';
 import { generateAnalyticsData, calculateWeeklyStats, generateAIRecommendations, calculateGoalProgress, generateMacroData } from '../utils/analytics';
 import { AnalyticsCard } from '../components/AnalyticsCard';
